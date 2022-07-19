@@ -12,7 +12,9 @@ public class Common {
     /** 默认时间间隔 */
     public static final long MILLISECOND = 1;
     /** 限流的redis键 */
-    public static final String LIMIT_REDIS_KEY = "limit.redis.key";
+    public static final String LIMIT_REDIS_KEY_FIXED_TIME = "limit:redis:key:fixedTimeWindow";
+    /** 限流的redis键 */
+    public static final String LIMIT_REDIS_KEY_SLIDING_TIME = "limit:redis:key:slidingTimeWindow";
 
 
 }

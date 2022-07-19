@@ -4,6 +4,7 @@ import com.example.limit.service.LimitService;
 import com.example.limit.utils.Common;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.support.atomic.RedisAtomicInteger;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class FixedTimeWindowLimitServiceImpl implements LimitService {
         log.info("限流,requestCap:{},time:{}", requestCap, time);
 
         // redis的原子类，保证原子性
-        RedisAtomicInteger redisAtomicInteger = new RedisAtomicInteger(Common.LIMIT_REDIS_KEY,
+        RedisAtomicInteger redisAtomicInteger = new RedisAtomicInteger(Common.LIMIT_REDIS_KEY_FIXED_TIME,
                 Objects.requireNonNull(redisTemplate.getConnectionFactory()));
         // 获取原子数（获取的是加1之前的数），并加1 (每请求一次加1)
         int count = redisAtomicInteger.getAndIncrement();

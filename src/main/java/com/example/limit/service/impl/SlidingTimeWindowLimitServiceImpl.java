@@ -52,13 +52,13 @@ public class SlidingTimeWindowLimitServiceImpl implements LimitService {
          * 间内能承载更多的请求
          */
         // 获取从 differenceMills 到 currentTimeMillis 权重之间的总数，即这段时间内的请求数
-        Long count = redisTemplate.opsForZSet().count(Common.LIMIT_REDIS_KEY, differenceMills, currentTimeMillis);
+        Long count = redisTemplate.opsForZSet().count(Common.LIMIT_REDIS_KEY_SLIDING_TIME, differenceMills, currentTimeMillis);
         // 如果超出请求上限，就限流
         if (Objects.nonNull(count) && count > requestCap) {
             return true;
         }
         // 使用 redis 的 zset 存储, 键、值、权重; 权重存储的是当前时间戳，可能每次请求过来都不一样
-        redisTemplate.opsForZSet().add(Common.LIMIT_REDIS_KEY,
+        redisTemplate.opsForZSet().add(Common.LIMIT_REDIS_KEY_SLIDING_TIME,
                 UUID.randomUUID().toString(),
                 currentTimeMillis);
         return false;
