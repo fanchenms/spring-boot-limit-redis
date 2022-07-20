@@ -30,10 +30,11 @@ public class SlidingTimeWindowLimitServiceImpl implements LimitService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public boolean limit(int requestCap, long time, TimeUnit timeUnit) {
-        log.info("限流,requestCap:{},time:{}", requestCap, time);
+    public boolean limit(int requestCap, long time, TimeUnit timeUnit, String key) {
+        log.info("滑动时间窗口算法限流,requestCap:{},time:{}", requestCap, time);
 
-        /** 使用 */
+        // redis 键是 前缀+类名+方法名；对每个接口单独限流
+        String redisKey = Common.LIMIT_REDIS_KEY_SLIDING_TIME + key;
         // 当前时间戳，每当一个请求过来很大可能会变
         long currentTimeMillis = System.currentTimeMillis();
         // 传进来的时间窗口的时间戳，固定不变
@@ -52,15 +53,17 @@ public class SlidingTimeWindowLimitServiceImpl implements LimitService {
          * 间内能承载更多的请求
          */
         // 获取从 differenceMills 到 currentTimeMillis 权重之间的总数，即这段时间内的请求数
-        Long count = redisTemplate.opsForZSet().count(Common.LIMIT_REDIS_KEY_SLIDING_TIME, differenceMills, currentTimeMillis);
+        Long count = redisTemplate.opsForZSet().count(redisKey, differenceMills, currentTimeMillis);
         // 如果超出请求上限，就限流
         if (Objects.nonNull(count) && count > requestCap) {
             return true;
         }
-        // 使用 redis 的 zset 存储, 键、值、权重; 权重存储的是当前时间戳，可能每次请求过来都不一样
-        redisTemplate.opsForZSet().add(Common.LIMIT_REDIS_KEY_SLIDING_TIME,
+        // 使用 redis 的 zset 存储, 键、值、权重;键相同值不同就是不同的元素; 权重存储的是当前时间戳，可能每次请求过来都不一样
+        redisTemplate.opsForZSet().add(redisKey,
                 UUID.randomUUID().toString(),
                 currentTimeMillis);
+        // 设置过期时间
+        redisTemplate.expire(redisKey, time, timeUnit);
         return false;
     }
 
