@@ -39,17 +39,36 @@ public class TokenBucketInterceptor implements HandlerInterceptor {
             return true;
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Method method = handlerMethod.getMethod();
-        // 如果没有注解 @RequestLimit 直接放行
-        if (!method.isAnnotationPresent(RequestLimit.class)) {
-            return true;
-        }
-        // 获取方法上的注解
-        RequestLimit requestLimit = handlerMethod.getMethodAnnotation(RequestLimit.class);
-        // 如果方法上没有 @RequestLimit 注解，则从该类上获取
+
+        //Method method = handlerMethod.getMethod();
+        // 如果方法上没有注解 @RequestLimit 直接放行；此处不能加这段代码，因为该注解可以在类上，对整个类起作用
+        //if (!method.isAnnotationPresent(RequestLimit.class)) {
+        //    return true;
+        //}
+
+        /**
+         * 先从类上获取限流注解，如果为空，再从方法上获取，这样的话，即使方法上单独有限流注解，
+         * 类上的限流注解也起作用，方法上单独的限流注解走它自己的实现，不受影响。即类上的限流起作用，
+         * 方法上的限流也起作用
+         *
+         * 如果想的是，方法上有了单独的限流注解，就只使用注解在方法上的限流规则，而不使用注解在类上的
+         * 限流规则，则先获取方法上的限流注解，如果为空，再去获取类上的限流注解即可，即调换一下位置；
+         * 代码如下：
+         *
+         * // 获取方法上的注解
+         * RequestLimit requestLimit = handlerMethod.getMethodAnnotation(RequestLimit.class);
+         * // 如果方法上没有 @RequestLimit 注解，则从该类上获取
+         * if (Objects.isNull(requestLimit)) {
+         *     requestLimit = handlerMethod.getBeanType().getAnnotation(RequestLimit.class);
+         * }
+         */
+        // 从类上获取 @RequestLimit 注解
+        RequestLimit requestLimit = handlerMethod.getBeanType().getAnnotation(RequestLimit.class);
+        // 如果类上没有该注解，则从方法上获取
         if (Objects.isNull(requestLimit)) {
-            requestLimit = handlerMethod.getBeanType().getAnnotation(RequestLimit.class);
+            requestLimit = handlerMethod.getMethodAnnotation(RequestLimit.class);
         }
+
         // 如果方法和类上都没有该注解，直接放行
         if (Objects.isNull(requestLimit)) {
             return true;

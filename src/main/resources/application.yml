@@ -19,4 +19,4 @@ spring:
 token:
   bucket:
     capacity: 1000
-    number: 10
+    number: 30

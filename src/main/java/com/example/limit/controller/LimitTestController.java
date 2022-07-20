@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0
  * @date 2022/7/18 - 20:27
  */
+@RequestLimit(type = LimitTypeEnum.TOKEN_BUCKET)
 @RestController
 public class LimitTestController {
 
@@ -56,10 +57,18 @@ public class LimitTestController {
         return R.success("访问正常！");
     }
 
-    /** 测试限流,滑动时间窗口 */
+
+    /** 测试限流,令牌桶 */
     @RequestLimit(type = LimitTypeEnum.TOKEN_BUCKET)
     @GetMapping("/limit4")
     public R testLimitToken() {
+        return R.success("访问正常！");
+    }
+
+    /** 测试限流,令牌桶 */
+    @RequestLimit(type = LimitTypeEnum.TOKEN_BUCKET)
+    @GetMapping("/limit5")
+    public R testLimitToken2() {
         return R.success("访问正常！");
     }
 
