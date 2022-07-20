@@ -13,6 +13,8 @@ public enum LimitTypeEnum {
     SLIDING_TIME_WINDOW(2, "滑动时间窗口算法"),
     /** 令牌桶算法 */
     TOKEN_BUCKET(3, "令牌桶算法"),
+    /** 令牌桶算法 */
+    LEAKY_BUCKET(4, "漏桶算法"),
     ;
 
     private final int value;

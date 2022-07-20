@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2022/7/18 - 20:27
  */
 @RequestLimit(type = LimitTypeEnum.TOKEN_BUCKET)
+//@RequestLimit(type = LimitTypeEnum.LEAKY_BUCKET)
 @RestController
 public class LimitTestController {
 

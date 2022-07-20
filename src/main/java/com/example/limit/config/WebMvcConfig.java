@@ -1,5 +1,6 @@
 package com.example.limit.config;
 
+import com.example.limit.interceptor.LeakyBucketInterceptor;
 import com.example.limit.interceptor.TokenBucketInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +18,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private TokenBucketInterceptor tokenBucketInterceptor;
 
+    @Autowired
+    private LeakyBucketInterceptor leakyBucketInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(tokenBucketInterceptor)
+                .addPathPatterns("/**");
+        registry.addInterceptor(leakyBucketInterceptor)
                 .addPathPatterns("/**");
     }
 

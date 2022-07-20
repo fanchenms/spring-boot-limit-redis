@@ -15,8 +15,10 @@ public class Common {
     public static final String LIMIT_REDIS_KEY_FIXED_TIME = "limit:redis:key:fixedTimeWindow";
     /** 限流的redis键，滑动时间窗口算法redis键前缀 */
     public static final String LIMIT_REDIS_KEY_SLIDING_TIME = "limit:redis:key:slidingTimeWindow";
-    /** 限流的redis键，令牌同算法redis键 */
+    /** 限流的redis键，令牌桶算法redis键 */
     public static final String LIMIT_REDIS_KEY_TOKEN_BUCKET = "limit:redis:key:tokenBucket";
+    /** 限流的redis键，漏桶算法redis键 */
+    public static final String LIMIT_REDIS_KEY_LEAKY_BUCKET = "limit:redis:key:leakyBucket";
 
 
 }
