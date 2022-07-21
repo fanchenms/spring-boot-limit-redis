@@ -24,5 +24,5 @@ token:
 # 漏桶容量、每秒滴出的数量
 leaky:
   bucket:
-    capacity: 100
-    number: 10
+    capacity: 1000
+    number: 30
