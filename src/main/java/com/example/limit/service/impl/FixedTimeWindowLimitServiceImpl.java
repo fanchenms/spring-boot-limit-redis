@@ -1,5 +1,6 @@
 package com.example.limit.service.impl;
 
+import com.example.limit.enums.LimitTypeEnum;
 import com.example.limit.service.LimitService;
 import com.example.limit.utils.Common;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,11 @@ public class FixedTimeWindowLimitServiceImpl implements LimitService {
         }
         // 判断是否已经达到请求上限 (比如设置上限为1000，当第1000个请求进来时可以访问，第1001个请求拒绝访问);此处减1是因为count获取的是加1之前的数
         return count > (requestCap - 1);
+    }
+
+    @Override
+    public int getSupportedType() {
+        return LimitTypeEnum.FIXED_TIME_WINDOW.getValue();
     }
 
 }

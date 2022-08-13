@@ -1,5 +1,6 @@
 package com.example.limit.service.impl;
 
+import com.example.limit.enums.LimitTypeEnum;
 import com.example.limit.service.LimitService;
 import com.example.limit.utils.Common;
 import lombok.extern.slf4j.Slf4j;
@@ -65,6 +66,11 @@ public class SlidingTimeWindowLimitServiceImpl implements LimitService {
         // 设置过期时间
         redisTemplate.expire(redisKey, time, timeUnit);
         return false;
+    }
+
+    @Override
+    public int getSupportedType() {
+        return LimitTypeEnum.SLIDING_TIME_WINDOW.getValue();
     }
 
 }

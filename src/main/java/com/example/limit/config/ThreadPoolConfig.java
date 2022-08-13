@@ -42,7 +42,7 @@ public class ThreadPoolConfig {
                 Runtime.getRuntime().availableProcessors(),
                 5,
                 TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(2),
+                new ArrayBlockingQueue<>(5),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.DiscardOldestPolicy());
     }

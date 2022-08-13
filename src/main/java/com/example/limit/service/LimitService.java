@@ -19,4 +19,10 @@ public interface LimitService {
      */
     boolean limit(int requestCap, long time, TimeUnit timeUnit, String key);
 
+    /**
+     * 获取支持的类型，此方法用于工厂判断返回的LimitService的子类实现
+     * @return
+     */
+    int getSupportedType();
+
 }
