@@ -43,7 +43,7 @@ public class R {
     }
 
     public static R success(Object data) {
-        return success("success", null);
+        return success("success", data);
     }
 
     public static R error(int code, String msg) {
