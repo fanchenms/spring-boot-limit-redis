@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>spring-boot-limit-ridis</artifactId>
+    <artifactId>spring-boot-limit-redis</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-limit-redis</name>
     <description>redis限流实现</description>
